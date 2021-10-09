@@ -8,11 +8,11 @@
 
 <div align="center">
   <h3>
-    <a href="https://{your-demo-link.your-domain}">
+    <a href="https://exp.host/@jaybee4real/weather_app">
       Demo
     </a>
     <span> | </span>
-    <a href="https://{your-url-to-the-solution}">
+    <a href="https://github.com/Jaybee4real/Weather-app">
       Solution
     </a>
     <span> | </span>
@@ -37,26 +37,25 @@
 
 ## Overview
 
-![screenshot](https://user-images.githubusercontent.com/16707738/92399059-5716eb00-f132-11ea-8b14-bcacdc8ec97b.png)
+![screenshot](https://raw.githubusercontent.com/Jaybee4real/Weather-app/master/Screenshot.png)
 
-Introduce your projects by taking a screenshot, video recordings or a gif. Try to tell us about the solution you built by answering the following:
+Visitor can see weather details provided by the api based on the location that the device gives
 
-- Where can I see your demo?
-- What was your experience building it.
 
 ### Built With
 
 <!-- This section should list any major frameworks that you built your project using. Here are a few examples.-->
 
-- [React](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Tailwind](https://tailwindcss.com/)
+- [React Native](https://reactjs.org/)
+- [Expo CLI](https://expo.dev/)
 
 ## Features
 
 <!-- List the features of your application or follow the template. Don't share the figma file here :) -->
 
-What features did you develop?
+
+* Users can see the current weather based on thier city / current location
+* Users can see the Weather forecast for current selected city for the next 7 days
 
 ## How To Use
 
@@ -64,13 +63,29 @@ What features did you develop?
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
+
+
 ```bash
 # Clone this repository
-$ git clone https://github.com/your-user-name/your-project-name
+$ git clone https://github.com/Jaybee4real/Weather-app
+
+# Install Expo
+* run npm install -g expo-cli (if you do not have expo installed),
 
 # Install dependencies
 $ npm install
 
+# Start Project
+* the enter the project folder and run npm install
+* run expo start and scan the generated qr code
+
+# Install expo client
+$ Download the expo go app for ios and android
+
 # Run the app
-$ npm start
+$ Expo Start
+
+# Open the app
+$ Scan generated qr code on laptop with the expo client app
+ (Make sure you are on the same network)
 ```
