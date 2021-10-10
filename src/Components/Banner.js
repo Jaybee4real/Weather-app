@@ -28,7 +28,7 @@ export default function Banner({ currentWeather, loading }) {
                 <View>
                     <WeatherImage type={currentWeather[0]?.weather_state_abbr} />
                     <Text style={styles.bannerText}>
-                        {convertUnit(28, state.activeMeasureType)}
+                        {convertUnit(currentWeather[0]?.the_temp, state.activeMeasureType)}
                     </Text>
                     <Text style={styles.weatherType}>{currentWeather[0]?.weather_state_name}</Text>
                     <View style={styles.infoContainer}>
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 10,
         paddingBottom: 50,
+        maxWidth: width > 400 ? 400 : width,
     },
     text: {
         color: "#A09FB1",

@@ -31,7 +31,7 @@ const App = () => {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, /// //Can Be Changed
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, /// //Can Be Changed
           }}
           initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />

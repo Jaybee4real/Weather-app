@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, StatusBar, Alert } from 'react-native'
+import { StyleSheet, StatusBar, Alert, View, Text, } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Banner from '../Components/Banner'
 import Forecast from '../Components/Forecast'
@@ -8,6 +8,7 @@ import PermissionModal from '../Components/PermissionModal'
 import { getWeatherWithCurrentLocation, getWeather, checkPermission } from '../../store/app'
 import { ScrollView } from 'react-native-gesture-handler'
 import HeaderComponent from '../Components/HeaderComponent'
+import TodaysHighlight from '../Components/TodaysHighlight'
 
 
 export default function Home({ navigation, ...props }) {
@@ -33,9 +34,11 @@ export default function Home({ navigation, ...props }) {
     }
 
     const handleRequestWeatherWithLocation = async () => {
-        if (await dispatch(checkPermission()) === false)
+        const permissionStatus = await dispatch(checkPermission())
+        if (!permissionStatus && state.permissionGiven === false) {
             setModalVisible(true)
-        // else _getWeatherWithLocation()
+        }
+        else _getWeatherWithLocation()
     }
 
     useEffect(() => {
@@ -47,7 +50,7 @@ export default function Home({ navigation, ...props }) {
     }, [state])
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#1E213A' }}>
             <HeaderComponent onRequestWeatherWithLocation={handleRequestWeatherWithLocation} />
             <ScrollView style={styles.container}>
                 <StatusBar backgroundColor='#1E213A' barStyle="light-content" />
@@ -59,6 +62,12 @@ export default function Home({ navigation, ...props }) {
                     onRequestClose={() => modalVisible && setModalVisible(false)}
                     toggleModal={setModalVisible}
                 />
+                <TodaysHighlight currentWeather={weatherDetails} loading={loading} />
+                <View style={styles.row}>
+                    <Text style={styles.text}>created by</Text>
+                    <Text style={[styles.text, styles.myName]}>Jaybee4real</Text>
+                    <Text style={styles.text}>- Devchallenges.io</Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
@@ -71,4 +80,21 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1E213A',
     },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: '#100E1D',
+        paddingVertical: 20
+    },
+    text: {
+        fontFamily: "Raleway-500",
+        color: "#A09FB1",
+        fontSize: 16
+    },
+    myName: {
+        textDecorationLine: "underline",
+        fontFamily: "Raleway-600",
+        marginHorizontal: 5,
+    }
 })

@@ -35,10 +35,10 @@ export const { saveData, setPermission, setActiveCity, toggleMeasureType } = sli
 
 
 export const checkPermission = payload => async dispatch => {
-    let { granted } = await Location.getBackgroundPermissionsAsync();
+    let { granted, status } = await Location.getBackgroundPermissionsAsync();
     if (granted === false) {
         return false;
-    } else {
+    } else if (granted === true || status === "granted") {
         await dispatch(setPermission(true));
         return true
     }
@@ -51,14 +51,16 @@ export const getWeatherWithCurrentLocation = payload => async dispatch => {
     if (granted === false) {
         return { error: "Access to location services denied" };
     } else {
+        await dispatch(setPermission(true));
         location = await Location.getCurrentPositionAsync();
     }
     try {
         const result = await axios.get(`https://www.metaweather.com/api/location/search/?lattlong=${location.coords.latitude},${location.coords.longitude}`)
         await dispatch(setActiveCity(result.data[0]))
         await dispatch(getWeather(result.data[0].woeid))
+        return true
     } catch (e) {
-        // console.log("Location could not be accessed!", e);
+        console.log("Location could not be accessed!", e);
         return { error: "Failed to get table data", e }
     }
 };
@@ -70,10 +72,18 @@ export const getWeather = payload => async dispatch => {
         const result = await axios.get(`https://api.allorigins.win/raw?url=https://www.metaweather.com/api/location/${payload}`)
         await dispatch(saveData(result.data.consolidated_weather))
         console.log("Weather details received")
-        return true
     } catch (e) {
         return { error: "Failed to get table data, please try again", e }
     }
 }
 
 
+export const searchLocations = payload => async dispatch => {
+    console.log("Searching for location")
+    try {
+        const result = await axios.get(`https://api.allorigins.win/raw?url=https://www.metaweather.com/api/location/search/?query=${payload}`)
+        return result.data
+    } catch (e) {
+        return { error: "Failed to get table data, please try again", e }
+    }
+}

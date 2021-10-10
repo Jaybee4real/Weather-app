@@ -32,7 +32,8 @@ export default function WeatherImage({ type, imageStyles, ...props }) {
     }
 
     return (
-        <Image source={WeatherImage[type]} style={[styles.image, imageStyles]} resizeMode="cover" resizeMethod="scale" />
+        <Image source={WeatherImage[type]} style={[styles.image, imageStyles]} 
+        resizeMode="contain" resizeMethod="scale" />
     )
 }
 
