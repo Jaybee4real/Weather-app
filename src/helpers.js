@@ -10,10 +10,10 @@ export const formatDate = (dateVal) => {
 
 
 export const convertUnit = (val, type = 'celsius') => {
-    let convertedUnitValue
+    let convertedUnitValue 
     if (type === 'celsius') {
-        convertedUnitValue = Math.round((val - 32) * (5 / 9)) + '°C'
-    } else if (type === 'farenheit') {
+        convertedUnitValue = Math.round(val) + '°C'
+    } else if (type === 'fahrenheit') {
         convertedUnitValue = Math.round(val * (9 / 5) + 32) + '°F'
     } return convertedUnitValue
 }

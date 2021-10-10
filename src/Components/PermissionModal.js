@@ -4,7 +4,7 @@ import { View, Text, Modal, TouchableOpacity, StyleSheet, Dimensions } from 'rea
 
 
 const { height, width } = Dimensions.get("screen")
-export default function PermissionModal({ visible, onRequestClose, toggleModal }) {
+export default function PermissionModal({ visible, onRequestClose, onAllowPermission }) {
     return (
         <Modal
             animationType="slide"
@@ -19,13 +19,13 @@ export default function PermissionModal({ visible, onRequestClose, toggleModal }
                     </Text>
                     <Text style={{ ...styles.text, color: "black", textAlign: "center" }}> This app uses your location to get personalized weather data for your current city</Text>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={styles.modalButton} onPress={() => toggleModal(false)}>
+                        <TouchableOpacity style={styles.modalButton} onPress={() => onRequestClose()}>
                             <Text style={{ ...styles.text, fontFamily: "Raleway-600" }}>No, Thanks</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{ ...styles.modalButton, backgroundColor: "green" }}
                             onPress={() => {
-                                toggleModal(false)
+                                onAllowPermission()
                                 onRequestClose()
                             }}>
                             <Text style={{ ...styles.text, fontFamily: "Raleway-600" }}>Give Access</Text>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     text: {
-        color: "#A09FB1",
+        color: "white",
         fontFamily: "Raleway-600",
         fontSize: 16
     },

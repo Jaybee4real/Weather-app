@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import WeatherImage from './WeatherImage'
 import Icon from "react-native-vector-icons/FontAwesome5"
 import { useSelector } from 'react-redux'
+import { convertUnit } from '../helpers'
 
 
 
@@ -26,8 +27,8 @@ export default function Banner({ currentWeather, loading }) {
             {!loading &&
                 <View>
                     <WeatherImage type={currentWeather[0]?.weather_state_abbr} />
-                    <Text style={styles.bannerText}>{Math.round(currentWeather[0]?.the_temp)}°
-                        <Text style={{ fontSize: 40, color: "white" }}>{state.activeMeasureType}</Text>
+                    <Text style={styles.bannerText}>
+                        {convertUnit(28, state.activeMeasureType)}
                     </Text>
                     <Text style={styles.weatherType}>{currentWeather[0]?.weather_state_name}</Text>
                     <View style={styles.infoContainer}>

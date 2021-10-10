@@ -8,11 +8,11 @@ export default function Forecast({ weatherList, loading }) {
             {loading === false && weatherList.length > 0 && weatherList.map((weather, index) => {
                 return <WeatherCard key={index} weather={weather} />
             })}
-            <View style={styles.indicatorContainer }>
-                {loading && <View style={styles.loadingContainer}>
+            {loading &&
+                <View style={styles.indicatorContainer}>
                     <ActivityIndicator color="white" size="large" />
-                </View>}
-            </View>
+                </View>
+            }
         </View>
     )
 }
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 400,
+        minHeight: 400
     }
 })

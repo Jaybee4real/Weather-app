@@ -1,30 +1,45 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
+import { StyleSheet, StatusBar, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Banner from '../Components/Banner'
-import MDIcon from 'react-native-vector-icons/MaterialIcons'
 import Forecast from '../Components/Forecast'
 import { useDispatch, useSelector } from 'react-redux'
 import PermissionModal from '../Components/PermissionModal'
-import { getWeatherWhereOnEarth } from '../../store/app'
+import { getWeatherWithCurrentLocation, getWeather, checkPermission } from '../../store/app'
 import { ScrollView } from 'react-native-gesture-handler'
+import HeaderComponent from '../Components/HeaderComponent'
 
 
 export default function Home({ navigation, ...props }) {
     const dispatch = useDispatch()
     const state = useSelector(state => state.app)
     const [weatherDetails, setweatherDetails] = useState(state.weatherDetails)
-    const [modalVisible, setModalVisible] = useState(state.permissionGiven)
+    const [modalVisible, setModalVisible] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const getWeatherData = async () => {
+    const _getWeatherWithLocation = async () => {
         setLoading(true)
-        await dispatch(getWeatherWhereOnEarth())
+        const { error } = await dispatch(getWeatherWithCurrentLocation())
+        if (error) {
+            Alert.alert('Error', error)
+        }
         setLoading(false)
     }
 
+    const getDefaultLocationWeather = async () => {
+        setLoading(true)
+        await dispatch(getWeather(2459115)) // set default to be New York
+        setLoading(false)
+    }
+
+    const handleRequestWeatherWithLocation = async () => {
+        if (await dispatch(checkPermission()) === false)
+            setModalVisible(true)
+        // else _getWeatherWithLocation()
+    }
+
     useEffect(() => {
-        getWeatherData()
+        getDefaultLocationWeather()
     }, [])
 
     useEffect(() => {
@@ -32,26 +47,20 @@ export default function Home({ navigation, ...props }) {
     }, [state])
 
     return (
-        <>
-            <View style={styles.headingContainer}>
-                <TouchableOpacity style={styles.headingButton} onPress={() => navigation.push("Search")}>
-                    <Text style={styles.headingText}>Search for places</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconContainer} onPress={getWeatherData}>
-                    <MDIcon name="gps-fixed" size={24} color="white" />
-                </TouchableOpacity>
-            </View>
+        <SafeAreaView style={{ flex: 1 }}>
+            <HeaderComponent onRequestWeatherWithLocation={handleRequestWeatherWithLocation} />
             <ScrollView style={styles.container}>
                 <StatusBar backgroundColor='#1E213A' barStyle="light-content" />
                 <Banner currentWeather={weatherDetails} loading={loading} />
                 <Forecast weatherList={weatherDetails} loading={loading} />
                 <PermissionModal
                     visible={modalVisible}
-                    onRequestClose={() => _getWeatherData()}
+                    onAllowPermission={_getWeatherWithLocation}
+                    onRequestClose={() => modalVisible && setModalVisible(false)}
                     toggleModal={setModalVisible}
                 />
             </ScrollView>
-        </>
+        </SafeAreaView>
     )
 }
 
@@ -61,33 +70,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1E213A',
-    },
-    headingContainer: {
-        padding: 20,
-        // margin: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: '#1E213A',
-        zIndex: -1
-    },
-    headingButton: {
-        backgroundColor: '#6E707A',
-        padding: 10,
-        borderRadius: 3,
-    },
-    headingText: {
-        fontFamily: "Raleway-600",
-        textAlign: "center",
-        fontSize: 15,
-        color: "white"
-    },
-    iconContainer: {
-        backgroundColor: '#6E707A',
-        height: 40,
-        width: 40,
-        borderRadius: 20,
-        justifyContent: "center",
-        alignItems: "center"
     },
 })

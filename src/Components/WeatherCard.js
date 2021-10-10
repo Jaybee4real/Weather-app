@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { useSelector } from 'react-redux'
 import { convertUnit, formatDate } from '../helpers'
 import WeatherImage from './WeatherImage'
 
 const { width, height } = Dimensions.get('window')
 export default function WeatherCard({ weather }) {
+    const state = useSelector(state => state.app)
     return (
         <View style={styles.container}>
             <Text style={styles.text}>{formatDate(weather.applicable_date)}</Text>
@@ -13,7 +15,7 @@ export default function WeatherCard({ weather }) {
                 imageStyles={{ height: 100, width: 100, marginLeft: -10 }}
             />
             <View style={styles.tempContainer}>
-                <Text style={styles.text}>{convertUnit(weather.min_temp)}</Text>
+                <Text style={styles.text}>{convertUnit(weather.min_temp, state.activeMeasureType)}</Text>
                 <Text style={styles.text}>{convertUnit(weather.max_temp)}</Text>
             </View>
         </View>
